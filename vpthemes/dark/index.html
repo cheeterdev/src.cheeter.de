@@ -1,0 +1,785 @@
+<html lang="english" dir="ltr" data-style="basic">
+<!--
+   vPanel Demo
+   (c) 2022-Present Wybe Network, no rights reserved. The idea and text is from SmallHost, at smallhost.us.to.
+   This is a demo version of vPanel for MOFH-based providers.
+   You are free to use this code with changes that will be explained later. 
+   Providing/retaining credit to Wybe and SmallHost is recommended, but not required.
+   Enjoy! ^w^
+-->
+<head>
+      <style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>
+      <style type="text/css">[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+      <title> </title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width">
+      <!-- Chrome, Firefox OS and Opera -->
+      <meta name="theme-color" content="#293a4a">
+      <!-- Mobile Chrome-->
+      <meta name="mobile-web-app-capable" content="yes">
+      <meta name="mobile-web-app-status-bar-style" content="default">
+      <!-- iOS Safari -->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="default">
+      <link rel="shortcut icon" href="elements/favicon.ico" type="image/x-icon">
+      <link rel="stylesheet" type="text/css" href="elements/original.master-ltr.cmb.min.css">
+      <link rel="stylesheet" type="text/css" href="elements/chosen.min.css">
+      <link rel="stylesheet" type="text/css" href="styles.css">
+      <link rel="stylesheet" type="text/css" href="elements/icon_spritemap.css">
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+      <script type="text/javascript" src="elements/bootstrap.min.js"></script>
+   </head>
+   <body id="cpanel_body" class="yui-skin-sam">
+      <div id="wrap">
+         <header id="masterAppContainer" ng-controller="applicationListController" class="ng-scope">
+            <div class="navbar navbar-inverse navbar-cpanel navbar-fixed-top" role="navigation">
+               <div class="navbar-header">
+                  <button type="button" id="btnSideBarToggle" class="cp-nav-toggle">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="cp-icon-bar"></span>
+                  <span class="cp-icon-bar"></span>
+                  <span class="cp-icon-bar"></span>
+                  </button>
+                  <a href="./" id="lnkHeaderHome" class="navbar-brand" target="_top" title="Home">
+                  <img id="imgLogo" class="navbar-brand-logo" src="elements/vplogo.png" alt=""><font style="vertical-align: sub;">
+                  </font>
+                  </a>
+                  <script type="text/ng-template" id="customTemplate.html">
+                     <a href="{{ match.model.url }}">
+                     </a>
+                  </script>
+                  <div class="navbar-preferences form-inline">
+                     <div class="btn-group">
+                        <button id="btnUserPref" data-toggle="dropdown" class="btn dropdown-toggle user-preferences-btn">
+                        <span id="userImg" class="glyphicon glyphicon-user"></span>
+                        <span id="lblUserNameTxt" class="hidden-inline-xs">YOURPREFIX_DEMO</span>
+                        <span id="caretImg" class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                           <li>
+                              <a id="lnkUserPrefChangePwd" href="changepassword.html">Change Password</a>
+                           </li>
+                           <li>
+                              <a id="lnkUserPrefChangeLang" href="changelanguage.html">Change Language</a>
+                           </li>
+                           <li>
+                              <a id="lnkUserPrefUpdateContactInfo" href="changeemail.html">Update Contact Email</a>
+                           </li>
+                           <li>
+                              <a id="lnkUserPrefResetInterface" href="#" data-toggle="modal" data-target="#demo" onclick="reset_all_interface_settings()">
+                              Reset Page Settings 
+                              </a>
+                           </li>
+                        </ul>
+                     </div>
+                     <a id="lnkHeaderLogout" target="_top" href="#" data-toggle="modal" data-target="#demo" class="btn link-buttons">
+                     <span id="logoutImg" class="glyphicon glyphicon-log-out"></span>
+                     <span id="lblLogout" class="hidden-inline-xs">Log Out</span>
+                     </a>
+                  </div>
+               </div>
+            </div>
+            <!-- UI INCLUDES GLOBAL HEADER -->
+            <div id="include-global-header">
+            </div>
+            <!-- UI INCLUDES GLOBAL HEADER END-->
+         </header>
+         <aside id="sidebar" class="ng-scope">
+            <a id="lnkMenu" href="./" title="" class="active" data-toggle="tooltip" data-placement="right" data-original-title="Home">
+            <i class="fa fa-2x fa-th" id="imgMenu"></i>
+            </a>
+            <a id="26244546358179969" href="upgrade.html" data-original-title="Upgrade Plans">
+            <img width="28px" height="28px" src="elements/pl-sidebar-upgrade.png">
+            </a>
+            <br><br>
+            <div style="position: float;left:100px; vertical-align:middle;"></div>
+         </aside>
+         <!-- PAGE TEMPLATE'S CONTENT START -->
+         <div id="content" class="container-fluid">
+            <div growl="" limit-messages="1">
+               <div class="growl-container growl-fixed top-right">
+                  <!-- ngRepeat: message in growlMessages.directives[referenceId].messages -->
+               </div>
+            </div>
+            <div class="row">
+               <div id="main" class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                  <div ng-controller="applicationListController">
+                     <div class="application-list-loading-indicator ng-hide">
+                        <span class="fa fa-spinner fa-spin fa-lg"></span> Loading …
+                     </div>
+                     <div id="jump-search" class="">
+                        <div align="center">
+                        </div>
+                        <input id="quickjump" type="text" class="form-control ng-pristine ng-untouched ng-valid" ng-model="searchText" ng-keyup="clearSearch($event)" placeholder="[DISABLED IN DEMO] Find functions quickly by typing here." name="">
+                     </div>
+                     <div id="boxes" class="">
+                        <div drop-area="" drop="handleDrop" id="top-drop-area" class="drop-area"></div>
+                        <div ="group="" in="" applicationlist="" track="" by="" group.group"="">
+                        <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                           SEARCH FOR A NEW DOMAIN NAME
+                        </div>
+                        <div draggable="true" drag="handleDrag" id="-group" class="panel panel-widget icon-menu-section" role="category">
+                           <form target="_blank" action="https://ifastnet.com/portal/domainchecker.php" method="post" class="ng-pristine ng-valid" name="">
+                              <input name="direct" value="true" type="hidden">
+                              <input name="domain" size="54" type="text">
+                              <select name="ext">
+                                 <option value=".info">.info</option>
+                                 <option value=".com">.com</option>
+                                 <option value=".net">.net</option>
+                                 <option value=".org">.org</option>
+                                 <option value=".cc">.cc</option>
+                                 <option value=".co.uk">.co.uk</option>
+                                 <option value=".biz">.biz</option>
+                                 <option value=".bz">.bz</option>
+                                 <option value=".eu">.eu</option>
+                                 <option value=".mobi">.mobi</option>
+                                 <option value=".us">.us</option>
+                                 <option value=".name">.name</option>
+                              </select>
+                              <input class="btn btn-info" value="Check Now" type="submit">
+                           </form>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="-drop-area" class="drop-area"></div>
+                     </div>
+                  </div>
+                  <div id="boxes" class="">
+                     <div drop-area="" drop="handleDrop" id="top-drop-area" class="drop-area"></div>
+                     <!-- ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="preferences-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="preferences-header" class="group-header">Preferences</span>
+                              <span id="preferences-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="preferences-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-change_password" class="itemImageWrapper integrations_icon spriteicon_img icon-change_password" href="changepassword.html">
+                                 </a>
+                                 <a id="item_change_password" class="itemTextWrapper link"  href="changepassword.html"">Change Password</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-change_language" class="itemImageWrapper integrations_icon spriteicon_img icon-change_language" href="changelanguage.html">
+                                 </a>
+                                 <a id="item_change_language" class="itemTextWrapper link"  href="changelanguage.html">Change Language</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-contact_information" class="itemImageWrapper integrations_icon spriteicon_img icon-contact_information" href="changeemail.html">
+                                 </a>
+                                 <a id="item_contact_information" class="itemTextWrapper link"  href="changeemail.html">Update Contact Email</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-backup_wizard" class="itemImageWrapper integrations_icon spriteicon_img icon-backup_wizard" href="gettingstarted.html">
+                                 </a>
+                                 <a id="item_backup_wizard" class="itemTextWrapper link"  href="gettingstarted.html"">Getting Started</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-two_factor_authentication" class="itemImageWrapper integrations_icon spriteicon_img icon-two_factor_authentication" href="upgrade.html">
+                                 </a>
+                                 <a id="item_two_factor_authentication" class="itemTextWrapper link"  href="upgrade.html">Account Upgrades</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-user_manager" class="itemImageWrapper integrations_icon spriteicon_img icon-user_manager" href="accountsettings.html">
+                                 </a>
+                                 <a id="item_user_manager" class="itemTextWrapper link"  href="accountsettings.html">Account Settings</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="preferences-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="files-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="files-header" class="group-header">Files</span>
+                              <span id="files-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="files-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-file_manager" class="itemImageWrapper integrations_icon spriteicon_img icon-file_manager" href="https://filemanager.ai/new/#/c/" target="_blank">
+                                 </a>
+                                 <a id="item_file_manager" class="itemTextWrapper link"  href="https://filemanager.ai/new/#/c/" target="_blank">Online File Manager</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-directory_privacy" class="itemImageWrapper integrations_icon spriteicon_img icon-directory_privacy" href="protectedfolders.html">
+                                 </a>
+                                 <a id="item_directory_privacy" class="itemTextWrapper link" href="protectedfolders.html">Directory Privacy</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-disk_usage" class="itemImageWrapper integrations_icon spriteicon_img icon-disk_usage" href="diskspace.html">
+                                 </a>
+                                 <a id="item_disk_usage" class="itemTextWrapper link"  href="diskspace.html">Disk Usage</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-ftp_accounts" class="itemImageWrapper integrations_icon spriteicon_img icon-ftp_accounts" href="ftpaccounts.html" target="">
+                                 </a>
+                                 <a id="item_ftp_accounts" class="itemTextWrapper link"  href="ftpaccounts.html" >FTP Accounts</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-ftp_connections" class="itemImageWrapper integrations_icon spriteicon_img icon-ftp_connections" href="ftpsoftware.html" >
+                                 </a>
+                                 <a id="item_ftp_connections" class="itemTextWrapper link"  href="ftpsoftware.html" >Free FTP Software</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-backup" class="itemImageWrapper integrations_icon spriteicon_img icon-backup" href="backup.html">
+                                 </a>
+                                 <a id="item_backup" class="itemTextWrapper link"  href="backup.html">Backups</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="files-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="databases-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="databases-header" class="group-header">Databases</span>
+                              <span id="databases-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="databases-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-php_my_admin" class="itemImageWrapper integrations_icon spriteicon_img icon-php_my_admin" href="pma.html">
+                                 </a>
+                                 <a id="item_php_my_admin" class="itemTextWrapper link"  href="pma.html">phpMyAdmin</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-mysql_databases" class="itemImageWrapper integrations_icon spriteicon_img icon-mysql_databases" href="mysql.html" >
+                                 </a>
+                                 <a id="item_mysql_databases" class="itemTextWrapper link"  href="mysql.html">MySQL Databases</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-remote_mysql" class="itemImageWrapper integrations_icon spriteicon_img icon-remote_mysql" href="remotemysql.html">
+                                 </a>
+                                 <a id="item_remote_mysql" class="itemTextWrapper link"  href="remotemysql.html">Remote MySQL</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-postgresql_databases" class="itemImageWrapper integrations_icon spriteicon_img icon-postgresql_databases" href="psql.html">
+                                 </a>
+                                 <a id="item_postgresql_databases" class="itemTextWrapper link"  href="psql.html">PostgreSQL Databases</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="databases-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="domains-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="domains-header" class="group-header">Domains</span>
+                              <span id="domains-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="domains-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-addon_domains" class="itemImageWrapper integrations_icon spriteicon_img icon-addon_domains" href="addondomains.html">
+                                 </a>
+                                 <a id="item_addon_domains" class="itemTextWrapper link"  href="addondomains.html">Addon Domains</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-subdomains" class="itemImageWrapper integrations_icon spriteicon_img icon-subdomains" href="subdomains.html">
+                                 </a>
+                                 <a id="item_subdomains" class="itemTextWrapper link"  href="subdomains.html">Sub Domains</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-aliases" class="itemImageWrapper integrations_icon spriteicon_img icon-aliases" href="parked.html">
+                                 </a>
+                                 <a id="item_aliases" class="itemTextWrapper link"  href="parked.html">Aliases (Parked Domains)</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-redirects" class="itemImageWrapper integrations_icon spriteicon_img icon-redirects" href="redirect.html">
+                                 </a>
+                                 <a id="item_redirects" class="itemTextWrapper link"  href="redirect.html">Redirects</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="domains-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="email-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="email-header" class="group-header">Email</span>
+                              <span id="email-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="email-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <!-- DISABLED
+                                 <div class="item" role="page">
+                                    <a id="icon-accounts" class="itemImageWrapper integrations_icon spriteicon_img icon-accounts" href="emailaccounts.html">
+                                    </a>
+                                    <a id="item_accounts" class="itemTextWrapper link"  href="#emailaccounts.html">Email Accounts</a>
+                                 </div>
+                                 -->
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <!-- DISABLED
+                                 <div class="item" role="page">
+                                    <a id="icon-forwarders" class="itemImageWrapper integrations_icon spriteicon_img icon-forwarders" href="emailforwarders.html">
+                                    </a>
+                                    <a id="item_forwarders" class="itemTextWrapper link"  href="emailforwarders.html">Forwarders</a>
+                                 </div>
+                                 -->
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-mx_entry" class="itemImageWrapper integrations_icon spriteicon_img icon-mx_entry" href="mxrecords.html">
+                                 </a>
+                                 <a id="item_mx_entry" class="itemTextWrapper link"  href="mxrecords.html">MX Entry</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-advanced_zone_editor" class="itemImageWrapper integrations_icon spriteicon_img icon-advanced_zone_editor" href="spfrecords.html">
+                                 </a>
+                                 <a id="item_advanced_zone_editor" class="itemTextWrapper link"  href="spfrecords.html">SPF Records</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <!-- DISABLED
+                                 <div class="item" role="page" style="display: none;">
+                                    <a id="icon-email_filters" class="itemImageWrapper integrations_icon spriteicon_img icon-email_filters" href="http://185.27.134.244/roundcubemail/" target="_blank">
+                                    </a>
+                                    <a id="item_email_filters" class="itemTextWrapper link"  href="http://185.27.134.244/roundcubemail/" target="_blank">Webmail</a>
+                                 </div>
+                                 -->
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="email-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="metrics-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="metrics-header" class="group-header">Metrics</span>
+                              <span id="metrics-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="metrics-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-awstats" class="itemImageWrapper integrations_icon spriteicon_img icon-awstats" href="accountstatistics.html">
+                                 </a>
+                                 <a id="item_awstats" class="itemTextWrapper link"  href="accountstatistics.html">Account Statistics</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-errors" class="itemImageWrapper integrations_icon spriteicon_img icon-errors" href="errorlog.html">
+                                 </a>
+                                 <a id="item_errors" class="itemTextWrapper link"  href="errorlog.html">Error Logs</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-php" class="itemImageWrapper integrations_icon spriteicon_img icon-php" href="phpinfo.html">
+                                 </a>
+                                 <a id="item_php" class="itemTextWrapper link"  href="phpinfo.html">General PHP Info</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-raw_access" class="itemImageWrapper integrations_icon spriteicon_img icon-raw_access" href="accesslogs.html">
+                                 </a>
+                                 <a id="item_raw_access" class="itemTextWrapper link"  href="accesslogs.html">Access Logs</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="metrics-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="security-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="security-header" class="group-header">Security</span>
+                              <span id="security-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="security-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-ip_blocker" class="itemImageWrapper integrations_icon spriteicon_img icon-ip_blocker" href="deny_ip.html">
+                                 </a>
+                                 <a id="item_ip_blocker" class="itemTextWrapper link"  href="deny_ip.html">IP Blocker</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-ssl_tls" class="itemImageWrapper integrations_icon spriteicon_img icon-ssl_tls" href="sslcert.html">
+                                 </a>
+                                 <a id="item_ssl_tls" class="itemTextWrapper link"  href="sslcert.html">SSL/TLS</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="security-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="software-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="software-header" class="group-header">Software</span>
+                              <span id="software-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="software-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-sitereptile" class="itemImageWrapper integrations_icon spriteicon_img icon-sitereptile" href="sitebuilder.html">
+                                 </a>
+                                 <a id="item_sitereptile" class="itemTextWrapper link" href="sitebuilder.html">SiteBuilder</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-softaculous" class="itemImageWrapper integrations_icon spriteicon_img icon-softaculous" href="#" data-toggle="modal" data-target="#demo" target="">
+                                 </a>
+                                 <a id="item_softaculous" class="itemTextWrapper link"  href="#" data-toggle="modal" data-target="#demo" target="">Softaculous Apps Installer</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-attracta_seotips" class="itemImageWrapper integrations_icon spriteicon_img icon-attracta_seotips" href="http://31.22.7.79/" target="_blank">
+                                 </a>
+                                 <a id="item_attracta_seotips" class="itemTextWrapper link"  href="http://31.22.7.79/" target="_blank">SEO Tools</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-multiphp_configuration" class="itemImageWrapper integrations_icon spriteicon_img icon-multiphp_configuration" href="phpconfig.html">
+                                 </a>
+                                 <a id="item_multiphp_configuration" class="itemTextWrapper link"  href="phpconfig.html">Alter PHP Config</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-lvephpsel" class="itemImageWrapper integrations_icon spriteicon_img icon-lvephpsel" href="phpselectversion.html" >
+                                 </a>
+                                 <a id="item_lvephpsel" class="itemTextWrapper link"  href="phpselectversion.html" >Select PHP Version</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="software-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="advanced-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="advanced-header" class="group-header">Advanced</span>
+                              <span id="advanced-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="advanced-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-cron_jobs" class="itemImageWrapper integrations_icon spriteicon_img icon-cron_jobs" href="cron_select.html">
+                                 </a>
+                                 <a id="item_cron_jobs" class="itemTextWrapper link"  href="cron_select.html">Cron Jobs</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-simple_zone_editor" class="itemImageWrapper integrations_icon spriteicon_img icon-simple_zone_editor"  href="cname.html" >
+                                 </a>
+                                 <a id="item_simple_zone_editor" class="itemTextWrapper link"  href="cname.html" target="">CNAME Records</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-error_pages" class="itemImageWrapper integrations_icon spriteicon_img icon-error_pages" href="errorpages.html">
+                                 </a>
+                                 <a id="item_error_pages" class="itemTextWrapper link"  href="errorpages.html">Error Pages</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="advanced-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="soft_div-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="soft_div-header" class="group-header">Softaculous Apps Installer</span>
+                              <span id="soft_div-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="soft_div-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-soft_div_icons" class="itemImageWrapper integrations_icon spriteicon_img icon-soft_div_icons" href="#" data-toggle="modal" data-target="#demo" target="">
+                                 </a>
+                                 <a id="item_soft_div_icons" class="itemTextWrapper link"  href="#" data-toggle="modal" data-target="#demo" target="">Softaculous Apps Installer</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="soft_div-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                     <div class="">
+                        <div draggable="true" drag="handleDrag" id="support-group" class="panel panel-widget icon-menu-section" role="category">
+                           <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(group.group)">
+                              <span id="support-header" class="group-header">Support</span>
+                              <span id="support-collapsed-indicator" class="group-header-indicator pull-right fa fa-minus"></span>
+                           </div>
+                           <div id="support-body" class="panel-body icon-container-body">
+                              <!-- ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-cloudflare_performance" class="itemImageWrapper integrations_icon spriteicon_img icon-cloudflare_performance" href="tutorialdomain.html" target="">
+                                 </a>
+                                 <a id="item_cloudflare_performance" class="itemTextWrapper link" href="tutorialdomain.html" target="">Domain Types</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-cloudflare_analytics" class="itemImageWrapper integrations_icon spriteicon_img icon-cloudflare_analytics" href="https://tutorials.securesignup.net/" target="_blank">
+                                 </a>
+                                 <a id="item_cloudflare_analytics" class="itemTextWrapper link"  href="http://tutorials.securesignup.net/" target="_blank">Tutorials</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-attracta_seotools" class="itemImageWrapper integrations_icon spriteicon_img icon-attracta_seotools" href="#" data-toggle="modal" data-target="#demo" target="">
+                                 </a>
+                                 <a id="item_attracta_seotools" class="itemTextWrapper link" href="#" data-toggle="modal" data-target="#demo" target="">Support Forum</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-createticket" class="itemImageWrapper integrations_icon spriteicon_img icon-createticket" href="newticket.html">
+                                 </a>
+                                 <a id="item_createticket" class="itemTextWrapper link"  href="newticket.html">Create New Ticket</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-ShowTickets" class="itemImageWrapper integrations_icon spriteicon_img icon-ShowTickets" href="opentickets.html">
+                                 </a>
+                                 <a id="item_ShowTickets" class="itemTextWrapper link"  href="opentickets.html">Open Support Tickets</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                              <div class="item" role="page">
+                                 <a id="icon-api_shell" class="itemImageWrapper integrations_icon spriteicon_img icon-api_shell" href="closedtickets.html">
+                                 </a>
+                                 <a id="item_api_shell" class="itemTextWrapper link"  href="closedtickets.html">Closed Support Tickets</a>
+                              </div>
+                              <!-- end ngRepeat: item in ::group.items track by item.file -->
+                           </div>
+                        </div>
+                        <div drop-area="" drop="handleDrop" id="support-drop-area" class="drop-area"></div>
+                     </div>
+                     <!-- end ngRepeat: group in applicationList track by group.group -->
+                  </div>
+               </div>
+            </div>
+            <!-- end main -->
+            <div id="stats" class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+               <div id="statsSection" class="panel panel-widget">
+                  <div id="statsHeaderSection" class="panel-heading widget-heading">
+                     Statistics                <i spinner="" id="loadingStatsSpinner" glyph-class="fa fa-spinner" class="pull-right fa fa-spinner ng-hide" title="Loading �~@�"></i>
+                  </div>
+                  <table class="table" id="stats" cellspacing="0" cellpadding="0">
+                     <tbody>
+                        <tr class="row-odd">
+                           <td class="stats_left">Plan:</td>
+                           <td class="stats_right">Free Hosting</td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">FTP accounts:</td>
+                           <td class="stats_right">1 / 1</td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Sub-Domains:</td>
+                           <td class="stats_right">
+                              1 / Unlimited
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">Add-on Domains:</td>
+                           <td class="stats_right">
+                              1 / Unlimited
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Parked Domains:</td>
+                           <td class="stats_right">
+                              1 / Unlimited
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">MySQL Databases:</td>
+                           <td class="stats_right">
+                              1 / Unlimited
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Disk Quota:</td>
+                           <td class="stats_right">
+                              Unlimited
+                           </td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">Disk Space Used:</td>
+                           <td class="stats_right">
+                              0 MB
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Disk Free:</td>
+                           <td class="stats_right">
+                              Unlimited
+                           </td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">Inodes Used:</td>
+                           <td class="stats_right">
+                              0 % (0 of 30019)
+                           </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Bandwidth:</td>
+                           <td class="stats_right">Unlimited        </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Bandwidth used:</td>
+                           <td class="stats_right">
+                              0 MB
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">Bandwidth remaining:</td>
+                           <td class="stats_right">
+                              Unlimited  
+                           </td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">Daily Hits Used:
+                           </td>
+                           <td class="stats_right">
+                              0 % (0 of 50000) 
+                              <div class="stats_progress_bar">
+                                 <div class="cpanel_widget_progress_bar_percent" style="display:none">0</div>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div id="statsSection" class="panel panel-widget">
+                  <div id="statsHeaderSection" class="panel-heading widget-heading">
+                     Account Details                <i spinner="" id="loadingStatsSpinner" glyph-class="fa fa-spinner" class="pull-right fa fa-spinner ng-hide" title="Loading …"></i>
+                  </div>
+                  <div id="content-stats" class="newContent">
+                     <div id="stats-header">
+                     </div>
+                  </div>
+                  <table class="table" id="stats" cellspacing="0" cellpadding="0">
+                     <tbody>
+                        <tr class="row-odd">
+                           <td class="stats_left">Main Domain:</td>
+                           <td class="stats_right"><small>YOURDOMAIN</small></td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">FTP hostname:</td>
+                           <td class="stats_right">ftpupload.net</td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">FTP username:</td>
+                           <td class="stats_right">YOURPREFIX_DEMO</td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">MySQL hostname:</td>
+                           <td class="stats_right">YOURSQL</td>
+                        </tr>
+                        <tr class="row-odd">
+                           <td class="stats_left">MySQL username:</td>
+                           <td class="stats_right">YOURPREFIX_DEMO</td>
+                        </tr>
+                        <tr class="row-even">
+                           <td class="stats_left">Hosting Volume:</td>
+                           <td class="stats_right">DEMO</td>
+                        </tr>
+                        <tr>
+                           <td class="stats_left"></td>
+                           <td class="stats_right"></td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <table class="table" id="stats" cellspacing="0" cellpadding="0">
+                     <tbody>
+                        <tr>
+                           <td class="stats_left">Home Directory:<br><small><small>/home/DEMO/demo.domain/www/</small></small>
+                              <br>
+                              <a class="btn btn-info" href="accountsettings.html">More account settings</a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <!-- end content-stats -->
+               <div style="text-align:left; position: float;right:00px; vertical-align:left;"></div>
+            </div>
+         </div>
+         <!-- end sub -->
+      </div>
+      <!-- end stats -->
+      </div>
+      <!-- PAGE TEMPLATE'S CONTENT END -->
+      <footer>
+         <!-- UI INCLUDES GLOBAL FOOTER -->
+         <!-- UI INCLUDES GLOBAL FOOTER END -->
+         <div class="container-fluid">
+            <br>
+            <!--Add your themes and scripts BELOW this line. No theme is currently active, and Responsive Domain Search is enabled.-->
+            <script type="text/javascript">
+               affCode = "25927";
+            </script>
+            <script src="https://vpc.cdn.wybenetwork.com/responsive-domain-search/responsive-domain-search.js" type="text/javascript"></script>
+            <!--Add your themes and scripts ABOVE this line. No theme is currently active, and Responsive Domain Search is enabled.-->
+            <div class="navbar">
+               <div class="navbar-brand" style="display:inline-block; z-index:2147483647; visibility:invisible;">
+                  <a id="lnkPoweredByCpanel" href="https://www.cpanel.net" target="cpanel" title="cPanel, Inc." style="display:inline-block; z-index:2147483647; visibility:visible;">
+                  <img id="imgPoweredByCpanel" src="elements/powered_by_cpanel.png" alt="cPanel, Inc." style="display:inline-block; z-index:2147483647; visibility:visible;">
+                  </a>
+                  <sub id="txtCpanelVersion" style="display:inline-block; z-index:2147483647; visibility:visible;"></sub>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="demo" tabindex="-1" role="dialog" aria-labelledby="demoDisabled" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header" style="border: 1px solid #293a4a;background-color: rgba(41,58,74,.95);color: #fff;">
+                     <h4 class="modal-title" id="demoDisabled">Demo Mode</h4>
+                  </div>
+                  <div class="modal-body">
+                     <p>This functionality is disabled in demo mode!</p>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+   </body>
+</html>
