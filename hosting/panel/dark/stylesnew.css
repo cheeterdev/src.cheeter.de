@@ -10,14 +10,14 @@
   --text-dim: rgba(255, 255, 255, 0.4);
 
   /* Accents */
-  --accent: #A57BFF; /* blue */
-  --accent-dark: #835DDC;
-  --accent-rgba-10: rgba(181, 59, 246, 0.1);
-  --accent-rgba-20: rgba(206, 59, 246, 0.2);
-  --accent-rgba-30: rgba(190, 59, 246, 0.3);
-  --accent-rgba-40: rgba(184, 59, 246, 0.4);
-  --accent-rgba-45: rgba(187, 59, 246, 0.45);
-  --accent-rgba-50: rgba(178, 59, 246, 0.5);
+  --accent: #ff4b4b; /* blue */
+  --accent-dark: #cc3c3c;
+  --accent-rgba-10: rgba(255, 75, 75, 0.1);
+  --accent-rgba-20: rgba(255, 75, 75, 0.2);
+  --accent-rgba-30: rgba(255, 75, 75, 0.3);
+  --accent-rgba-40: rgba(255, 75, 75, 0.4);
+  --accent-rgba-45: rgba(255, 75, 75, 0.45);
+  --accent-rgba-50: rgba(255, 75, 75, 0.5);
 
   /* Danger / red */
   --danger-1: #ef4444;
@@ -36,9 +36,9 @@
   --warning: #ff9800;
 
   /* radii */
-  --radius-sm: 11px;
+  --radius-sm: 10px;
   --radius-md: 25px;
-  --radius-lg: 25px;
+  --radius-lg: 15.5px;
 }
 
 /* =========================
@@ -274,7 +274,7 @@ ul.validation_errors_ul > li.validation_errors_li {
 .body-content .btn-warning,
 #content .btn-info,
 form input[value="Go"] {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  background: var(--accent);
   border: none;
   border-radius: var(--radius-sm);
   color: var(--text-strong);
@@ -1736,3 +1736,4 @@ div.cjt_status_bar_success {
 #sidebar {
   display: none;
 }
+
